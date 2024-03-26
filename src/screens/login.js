@@ -17,30 +17,32 @@ const LoginScreen = ({ navigation }) => {
       }
     
       axios.post('http://192.168.56.1:3000/users', { macv, password })
-        .then(response => {
-          const { success, message } = response.data;
-          if (success) {
-            setShowSuccessModal(true); // Hiển thị modal khi đăng nhập thành công
-            setTimeout(() => {
-              setShowSuccessModal(false); // Đóng modal sau 3 giây
-              navigation.navigate('Main'); // Chuyển hướng người dùng đến màn hình tiếp theo
-            }, 1000); // Đợi 3 giây trước khi tự động đóng modal
-            setPassword('');
+      .then(response => {
+        const { success, message } = response.data;
+        if (success) {
+          setShowSuccessModal(true); // Hiển thị modal khi đăng nhập thành công
+          setTimeout(() => {
+            setShowSuccessModal(false); // Đóng modal sau 3 giây
+            navigation.navigate('Main'); // Chuyển hướng người dùng đến màn hình tiếp theo
+            setPassword(''); // Xóa mật khẩu sau khi chuyển hướng đến Main
+          }, 1000); // Đợi 3 giây trước khi tự động đóng modal
+        } else {
+          if (message) {
+            setError(message);
           } else {
-            if (message) {
-              setError(message);
-            } else {
-              setError('Đăng nhập không thành công. Vui lòng thử lại sau.');
-            }
-            setShowModal(true);
+            setError('Đăng nhập không thành công. Vui lòng thử lại sau.');
           }
-        })
-        .catch(error => {
-          console.error('Đã xảy ra lỗi khi đăng nhập:', error);
-          setError('Mã số hoặc mật khẩu không chính xác');
           setShowModal(true);
-        });
-    }
+        }
+      })
+      .catch(error => {
+        console.error('Đã xảy ra lỗi khi đăng nhập:', error);
+        setError('Mã số hoặc mật khẩu không chính xác');
+        setShowModal(true);
+      });
+    
+    
+  }
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);

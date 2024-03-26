@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     // fjustifyContent: 'space-between',
     width: '90%', // Đặt chiều rộng của phần tử
     height: '80%',
-    marginTop: 55,
+    marginTop: 90,
     marginBottom: 100,
     backgroundColor: 'white',
     borderRadius: 20,

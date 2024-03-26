@@ -28,7 +28,6 @@ const ListScreen = ({ navigation }) => {
                     return new Date(b.date) - new Date(a.date);
                 });
 
-              
                 const formattedRequests = sortedRequests.map(request => ({
                     ...request,
                     date: formatDate(request.date)
@@ -75,16 +74,16 @@ const ListScreen = ({ navigation }) => {
   
     
     return (
-        <View>
+        <View style={styles.con}>
             <View style={styles.header}>
                 <TouchableOpacity onPress={handleList}>
                     <Image source={require('../../assets/left-arrow.png')} style={styles.headerIcon} />
                 </TouchableOpacity>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={{ fontSize: 19, textAlign: 'center', marginLeft: 10, fontWeight: 'bold' }}>Danh Sách Đăng Ký</Text>
+                    <Text style={{ fontSize: 19, textAlign: 'center', marginLeft: 10, fontWeight: 'bold',marginTop: 40 }}>Danh Sách Đăng Ký</Text>
                 </View>
             </View>
-            <View style={styles.con}>
+            <View >
                 <View style={styles.searchContainer}>
                     <TextInput
                         style={styles.searchInput}
@@ -136,16 +135,18 @@ const ListScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     con:{
+       flex: 1,
         backgroundColor: '#A1DCFF'
     },
     container: { 
         padding: 5,
     },
-    header: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 10,
-    },
+    // header: {
+    //     fontSize: 20,
+    //     fontWeight: 'bold',
+    //     marginBottom: 10,
+        
+    // },
     searchContainer: {
         flexDirection: 'row',
         alignItems: 'center', // Căn chỉnh các phần tử theo trục dọc để chúng nằm ở chính giữa
@@ -191,10 +192,11 @@ const styles = StyleSheet.create({
         padding: 4, 
     },
     header: {
-        marginTop: 40,
+   
         marginBottom: -2,
         flexDirection: 'row', 
-        padding: 5
+        padding: 5,
+        backgroundColor: 'white',
     },
     headerIcon:{
         marginLeft: 10,
@@ -202,6 +204,7 @@ const styles = StyleSheet.create({
         height: 30,
         resizeMode: 'contain',
         fontWeight: "bold",
+        marginTop: 40
     },
     row: {
         flexDirection: 'row',

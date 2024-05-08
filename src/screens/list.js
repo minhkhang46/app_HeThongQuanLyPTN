@@ -164,15 +164,16 @@ const styles = StyleSheet.create({
         marginLeft: 120,
     },
     searchButton: {
-        fontSize: 16,
-        color: 'blue',
+        // fontSize: 16,
+        // color: 'blue',
         marginBottom: 10,
         marginLeft: 10,
         marginTop: 10,
+       
         width: 40,
         height: 40,
         resizeMode: 'contain',
-        fontWeight: "bold",
+        // fontWeight: "bold",
     },
     icon:{
         marginBottom: 20,
@@ -181,7 +182,7 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         resizeMode: 'contain',
-        fontWeight: "bold",
+        // fontWeight: "bold",
     },
     table: {
         width: '100%',

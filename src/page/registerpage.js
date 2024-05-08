@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     resizeMode: 'contain',
-    fontWeight: "bold",
+    // fontWeight: "bold",
   },
 
   container: {

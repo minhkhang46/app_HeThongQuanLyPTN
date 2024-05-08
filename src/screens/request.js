@@ -65,16 +65,17 @@ const RequestScreen = ({ route, navigation }) => {
         // Reset dữ liệu
         setid_User('');
         setidPTN('');
-        setquantity('');
+        setQuantity('');
         setupdate_time(null);
         setDate(new Date());
+        setSuccessModalVisible(true);
         // Kiểm tra status trả về từ máy chủ
         if (res.data.idUser && res.data.status === 0) {
           // Hiện thông báo yêu cầu admin xử lý
           Alert.alert("Yêu cầu đã được gửi", "Vui lòng đợi quản trị viên xử lý.");
         } else {
           // Hiện modal thông báo thành công
-          setSuccessModalVisible(true);
+          
         }
       })
       .catch((err) => {

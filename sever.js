@@ -169,7 +169,7 @@ app.post('/qrdata', (req, res) => {
   const qrData = req.body.qrdata; // Lấy dữ liệu từ trường qrdata của phần thân yêu cầu
 
   // Thêm dữ liệu vào cột "qr_data" của bảng "qr"
-  db.query('INSERT INTO qr (qr_data) VALUES (?)', [qrData], (error, results) => {
+  db.query('INSERT INTO qrs (qr_data) VALUES (?)', [qrData], (error, results) => {
     if (error) {
       console.error('Error inserting data:', error);
       res.status(500).send('Internal server error');
@@ -182,7 +182,7 @@ app.post('/qrdata', (req, res) => {
 
 app.get('/qrdata', (req, res) => {
   // Truy vấn cơ sở dữ liệu để lấy dữ liệu QR code từ bảng qr
-  db.query('SELECT * FROM qr', (err, results) => {
+  db.query('SELECT * FROM qrs', (err, results) => {
     if (err) {
       console.error('Error querying database:', err);
       res.status(500).send('Internal server error');

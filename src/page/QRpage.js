@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import axios from 'axios';
+import Modal from 'react-native-modal';
 
 const Header = ({ navigation }) => {
   return (
     <View style={styles.header}>
-      <TouchableOpacity onPress={() => navigation.navigate('Main')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Welcome')}>
         <Image source={require('../../assets/left-arrow.png')} style={styles.headerIcon} />
       </TouchableOpacity>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -20,6 +21,7 @@ const QRWievScreen = ({ navigation }) => {
   const [qrCodes, setQRCodes] = useState([]);
   const [currentUserId, setCurrentUserId] = useState(null); // Lưu id đăng nhập người dùng hiện tại
   const [selectedQR, setSelectedQR] = useState(null); // Mã QR được chọn để hiển thị lớn hơn
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   // Lấy id đăng nhập người dùng hiện tại
   useEffect(() => {
@@ -42,37 +44,25 @@ const QRWievScreen = ({ navigation }) => {
       });
   }, []);
 
-  //không hiển thị các mục trống
-  const filteredQRCodes = qrCodes.filter(item => {
-    const qrDataObject = JSON.parse(item.qr_data);
-    const userID = qrDataObject.ID_User;
-    return currentUserId === userID;
-  });
+  useEffect(() => {
+    
+    // Show login modal if there are no QR codes for the current user
+    const timer = setTimeout(() => {
+      if (qrCodes.length === 0) {
+     
+        setShowLoginModal(false);
+      } else {
+        setShowLoginModal(true);
+      }
+    }, 100); // Adjust the delay as needed
 
-  // Sắp xếp danh sách QR theo ngày đăng ký giảm dần
-  const sortedQRCodes = filteredQRCodes.sort((a, b) => {
-    // Lấy đối tượng phân tích từng mục
-    const qrDataObjectA = JSON.parse(a.qr_data);
-    const qrDataObjectB = JSON.parse(b.qr_data);
-
-    // Lấy ngày từ đối tượng phân tích
-    const dateA = new Date(qrDataObjectA.date);
-    const dateB = new Date(qrDataObjectB.date);
-
-    // Sắp xếp theo thứ tự giảm dần của ngày
-    return dateB - dateA;
-  });
-
+    return () => clearTimeout(timer);
+  }, [qrCodes]);
+  
   const renderItem = ({ item }) => {
-    // Phân tích chuỗi JSON trong qr_data để lấy giá trị ID_User
     const qrDataObject = JSON.parse(item.qr_data);
-    
-    // Lấy giá trị ID_User từ đối tượng phân tích
     const userID = qrDataObject.ID_User;
-    
-    //lấy giá trị date 
     const dateqr = qrDataObject.date;
-    // Kiểm tra xem userID có giống với currentUserId không
     const isCurrentUserQR = currentUserId === userID;
   
     return (
@@ -97,86 +87,79 @@ const QRWievScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Header navigation={navigation} />
       <FlatList
-        data={sortedQRCodes}
+        data={qrCodes}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
       />
-      {/* //chỗ lam lon mã qr */}
-      {selectedQR && (
-        <>
-          <View style={styles.modalBackground} />
-          <View style={styles.qrModal}>
-            <QRCode value={selectedQR} size={250} />
-            <TouchableOpacity onPress={() => setSelectedQR(null)}>
-              <Text style={styles.closeButton}>Đóng</Text>
+      <Modal isVisible={showLoginModal}>
+        <View style={styles.modalContent}>
+          <Text style={styles.modalText}>Vui Lòng Đăng Nhập</Text>
+          <TouchableOpacity style={styles.modalButton} onPress={() => {setShowLoginModal(false); navigation.navigate('Welcome'); }}>
+            <Text style={{ color: 'white', fontSize: 18 }}>Đóng</Text>
             </TouchableOpacity>
-          </View>
-        </>
-      )}
+        </View>
+      </Modal>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#A1DCFF',
-  },
-  header: {
-    marginBottom: -2,
-    flexDirection: 'row', 
-    padding: 5,
-    backgroundColor:'white'
-  },
-  headerIcon: {
-    marginLeft: 10,
-    width: 30,
-    height: 30,
-    resizeMode: 'contain',
-    fontWeight: "bold",
-    marginTop: 40
-  },
-  itemContainer: {
-    borderRadius: 20,
-    marginTop: 30,
-    padding: 10,
-    backgroundColor: '#f0f0f0',
-    width: '90%',
-    marginLeft: 25,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  info: {
-    marginLeft: 10,
-  },
-  qrModal: {
-    position: 'absolute',
-    top: '30%',
-    left: '15%',
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 5,
-  },
-  modalBackground: {
-    position: 'absolute',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  closeButton: {
-    marginTop: 20,
-    color: '#0f0ffa',
-    fontSize: 20,
-    fontWeight: 'bold'
-  },
-});
+    container: {
+        flex: 1,
+        backgroundColor: '#A1DCFF',
+      },
+      header: {
+        marginBottom: -2,
+        flexDirection: 'row', 
+        padding: 5,
+        backgroundColor:'white'
+      },
+      headerIcon: {
+        marginLeft: 10,
+        width: 30,
+        height: 30,
+        resizeMode: 'contain',
+        fontWeight: "bold",
+        marginTop: 40
+      },
+      itemContainer: {
+        borderRadius: 20,
+        marginTop: 30,
+        padding: 10,
+        backgroundColor: '#f0f0f0',
+        width: '90%',
+        marginLeft: 25,
+      },
+      row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 5,
+      },
+      info: {
+        marginLeft: 10,
+      },
+      modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+      },
+      modalText: {
+        marginTop: 10,
+        marginBottom: 10,
+        textAlign: 'center',
+        fontSize: 22,
+        fontWeight:'bold',
+      },
+      modalButton: {
+        backgroundColor: '#4F46E5',
+        padding: 12,
+        alignItems: 'center',
+        borderRadius: 4,
+        width: '100%',
+      },
+    });
 
 export default QRWievScreen;

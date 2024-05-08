@@ -37,7 +37,7 @@ function WelcomePage() {
   }, []);
 
   const handleIconPress = () => {
-    navigation.navigate('LabPage');
+    navigation.navigate('QRpage');
   };
   const handleIconPressregister = () => {
     navigation.navigate('RegisterPage');
@@ -103,7 +103,7 @@ function WelcomePage() {
             <Text style={styles.triangleText}>Đăng ký phòng thí nghiệm</Text>
           </View>
           <View style={styles.borcontainer}>
-            <View>
+            {/* <View>
               <View style={styles.boxcontainer}>
                 <TouchableOpacity onPress={handleIconPress}>
                   <Image source={require('../../assets/chemistry.png')} style={styles.icon} />
@@ -111,7 +111,7 @@ function WelcomePage() {
               </View>
               <Text style={styles.text}>Danh mục</Text>
               <Text style={styles.text1}>phòng thí nghiệm</Text>
-            </View>
+            </View> */}
             <View>
               <View style={styles.boxcontainer}>
                 <TouchableOpacity onPress={handleIconPresspolicy}>
@@ -137,6 +137,15 @@ function WelcomePage() {
                 </TouchableOpacity>
               </View>
               <Text style={styles.text4}>Danh sách đăng ký</Text>
+             
+            </View>
+            <View>
+              <View style={styles.boxcontainer}>
+                <TouchableOpacity onPress={handleIconPress}>
+                  <Image source={require('../../assets/qr-code.png')} style={styles.icon} />
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.text5}>Mã QR đăng ký</Text>
              
             </View>
           </View>

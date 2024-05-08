@@ -127,7 +127,7 @@ function HomeScreen() {
           </View>
       
           <View style={styles.borcontainer}>
-            <View>
+            {/* <View>
               <View style={styles.boxcontainer}>
                 <TouchableOpacity onPress={handleIconPress}>
                   <Image source={require('../../assets/chemistry.png')} style={styles.icon} />
@@ -135,7 +135,7 @@ function HomeScreen() {
               </View>
               <Text style={styles.text}>Danh mục</Text>
               <Text style={styles.text1}>phòng thí nghiệm</Text>
-            </View>
+            </View>  */}
             <View>
               <View style={styles.boxcontainer}>
                 <TouchableOpacity onPress={handleIconPresspolicy}>
@@ -312,8 +312,8 @@ const styles = StyleSheet.create({
 
   text3:{
     fontSize: 15,
-    marginLeft: 15,
-    marginRight: 15,
+    marginLeft: 13,
+    marginRight: 14,
     fontWeight: 'bold',
   },
 

@@ -20,6 +20,7 @@ import PolicyPage from './src/page/policypage';
 import RegisterPage from './src/page/registerpage';
 import ListPage from './src/page/listpage';
 import LabPage from './src/page/labspage';
+import QRpage from './src/page/QRpage';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +35,7 @@ const App = () => {
         <Stack.Screen name="RegisterPage" component={RegisterPage} options={{ headerShown: false }} />
         <Stack.Screen name="ListPage" component={ListPage} options={{ headerShown: false }} />
         <Stack.Screen name="LabPage" component={LabPage} options={{ headerShown: false }} />
+        <Stack.Screen name="QRpage" component={QRpage} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
 
         {/* Screen */}

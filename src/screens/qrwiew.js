@@ -74,14 +74,34 @@ const QRWievScreen = ({ navigation }) => {
     const dateqr = qrDataObject.date;
     // Kiểm tra xem userID có giống với currentUserId không
     const isCurrentUserQR = currentUserId === userID;
+    const qrData = {
+      Mã_Số: qrDataObject.ID_User,
+      Phòng: qrDataObject.lab_name,
+      Số_Người: qrDataObject.quantity,
+      Thời_Gian: qrDataObject.registration_time,
+      Ngày: qrDataObject.date,
+    };
+  //   const qrDataValues = Object.values(Data);
+  
+  const removeBracketsAndQuotes = (jsonString) => {
+    // Sử dụng biểu thức chính quy để thay thế dấu {} và "" bằng chuỗi trống
+    const cleanedString = jsonString.replace(/[{}"]/g, '');
+    const stringWithSpaces = cleanedString.replace(/,/g, ', ');
+    const stringSpaces = stringWithSpaces.replace(/:/g, ': ');
+    return stringSpaces;
+  };
+  const Data = JSON.stringify(qrData);
+  const cleanedData = removeBracketsAndQuotes(Data);
+  // // Xóa dấu ngoặc kép và dấu phẩy từ mảng qrDataValues và kết hợp chúng thành một chuỗi
+  // const dataToEncode = qrDataValues.map(value => value.replace(/"/g, '')).join(', ');
   
     return (
-      <TouchableOpacity onPress={() => setSelectedQR(item.qr_data)}>
+      <TouchableOpacity onPress={() => setSelectedQR(cleanedData)}>
         <View>
           <View style={styles.itemContainer}>
             {isCurrentUserQR && (
               <View style={styles.row}>
-                <QRCode value={item.qr_data} size={100} />
+                <QRCode value={cleanedData} size={100} />
                 <View style={styles.info}>
                   <Text>Ngày : {dateqr}</Text>
                 </View>
@@ -133,14 +153,14 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     resizeMode: 'contain',
-    fontWeight: "bold",
+    // fontWeight: "bold",
     marginTop: 40
   },
   itemContainer: {
     borderRadius: 20,
     marginTop: 30,
     padding: 10,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: 'white',
     width: '90%',
     marginLeft: 25,
   },

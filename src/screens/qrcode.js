@@ -7,26 +7,47 @@ import randomstring from 'randomstring'; // Import thư viện tạo mật khẩ
 const QRCodeScreen = ({ navigation, route }) => {
   const { ID_User, lab_name, quantity, registration_time, date } = route.params;
   const [isSuccessModalVisible, setSuccessModalVisible] = useState(false);
-
-  // Sinh mật khẩu ngẫu nhiên
-  const password = randomstring.generate(8);
-
-  // Tạo chuỗi JSON từ dữ liệu cùng với mật khẩu
-  const dataToEncode = JSON.stringify({
+  const removeBracketsAndQuotes = (jsonString) => {
+    // Sử dụng biểu thức chính quy để thay thế dấu {} và "" bằng chuỗi trống
+    const cleanedString = jsonString.replace(/[{}"]/g, '');
+    const stringWithSpaces = cleanedString.replace(/,/g, ', ');
+    const stringSpaces = stringWithSpaces.replace(/:/g, ': ');
+    return stringSpaces;
+  };
+  // Tạo đối tượng chỉ chứa các giá trị mà bạn muốn hiển thị
+  const Data = {
     ID_User,
     lab_name,
     quantity,
     registration_time,
-    date,
-    password // Thêm mật khẩu vào dữ liệu
-  });
+    date
+  };
+  const dataqr = JSON.stringify(Data);
+  // // Lấy chỉ các giá trị từ đối tượng qrData
+  // const qrDataValues = Object.values(qrData);
 
+  // // Xóa dấu ngoặc kép và dấu phẩy từ mảng qrDataValues và kết hợp chúng thành một chuỗi
+  // const dataToEncode = qrDataValues.map(value => value.replace(/"/g, '')).join(', ');
+  const qrData = {
+    Mã_Số: ID_User, // Thay thế ID_User thành ma_so
+    Phòng: lab_name,
+    Số_Người: quantity,
+    Thời_Gian: registration_time,
+    Ngày: date,
+   
+  };
+  
+  //Chuyển đổi thành chuỗi JSON
+  const data = JSON.stringify(qrData);
+  const cleanedData = removeBracketsAndQuotes(data);
   // Hàm để lưu QR code vào cơ sở dữ liệu và hiển thị thông báo lưu thành công
   const saveQRCodeToDatabase = async () => {
     try {
+    
+  
       // Lưu mã QR code vào cơ sở dữ liệu
       await axios.post('http://192.168.56.1:3000/qrdata', {
-        qrdata: dataToEncode
+        qrdata: dataqr
       });
       setSuccessModalVisible(true);
     } catch (error) {
@@ -38,7 +59,7 @@ const QRCodeScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       {/* Hiển thị mã QR */}
       <View style={styles.qrCodeContainer}>
-        <QRCode value={dataToEncode} size={200} />
+        <QRCode value={cleanedData} size={200} />
       </View>
       {/* Nút để lưu QR code */}
       <TouchableOpacity style={styles.saveButton} onPress={saveQRCodeToDatabase}>
